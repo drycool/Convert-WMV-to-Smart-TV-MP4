@@ -120,3 +120,6 @@ Thumbs.db
 # FFmpeg binaries
 bin/
 *.exe
+
+# Build output (except for release assets)
+dist/WMV_to_SmartTV/_internal/
