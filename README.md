@@ -4,6 +4,7 @@ A modern desktop application for converting WMV video files to MP4, optimized fo
 
 ## Features
 
+- **Multilingual Interface** - English and Russian (Русский) languages supported
 - **Modern GUI** - Clean, dark-themed interface built with CustomTkinter
 - **GPU Acceleration** - NVIDIA NVENC support for 5-10x faster encoding on RTX GPUs
 - **Smart TV Optimized** - Output settings specifically tuned for TV playback
@@ -31,7 +32,19 @@ Download:
 - `wmv_to_smarttv.py` - the converter script
 - `ffmpeg-binaries.zip` - FFmpeg executables
 
+**Or download the portable version:**
+- `WMV_to_SmartTV-portable.zip` - Complete ready-to-run package (no installation needed)
+
 ### 2. Setup (Portable Mode)
+
+```
+1. Extract WMV_to_SmartTV-portable.zip
+2. Run: WMV_to_SmartTV.exe
+
+No additional installation required!
+```
+
+### 3. Alternative: Script + FFmpeg
 
 ```
 1. Extract ffmpeg-binaries.zip
@@ -39,13 +52,11 @@ Download:
    ├── ffmpeg.exe
    ├── ffplay.exe
    └── ffprobe.exe
-3. Place the "bin/" folder in the same directory as wmv_to_smarttv.py
+3. Place the "bin/" folder next to wmv_to_smarttv.py
 4. Run: python wmv_to_smarttv.py
 ```
 
-**Important:** The `bin/` folder must be next to `wmv_to_smarttv.py`, not inside it.
-
-### 3. Alternative: System FFmpeg
+### 4. System FFmpeg (Optional)
 
 If you prefer not to use the portable version:
 ```powershell
@@ -55,10 +66,21 @@ The script will automatically detect FFmpeg in your system PATH.
 
 ## Usage
 
-1. **Select Folder** - Click "Browse" to choose a folder with WMV files
-2. **GPU Option** - Check "GPU Acceleration" for NVIDIA GPUs (recommended)
-3. **Convert** - Click "Convert All" to start batch conversion
-4. **Open Folder** - Click to view your new MP4 files
+1. **Select Language** - Use the dropdown in the top-right corner (EN/RU)
+2. **Select Folder** - Click "Browse" to choose a folder with WMV files
+3. **GPU Option** - Check "GPU Acceleration" for NVIDIA GPUs (recommended)
+4. **Convert** - Click "Convert All" to start batch conversion
+5. **Open Folder** - Click to view your new MP4 files
+
+## Interface Preview
+
+The interface includes:
+- Language selector (top-right): English / Русский
+- Folder browser with file count
+- GPU/CPU encoding toggle
+- Real-time progress bar
+- Scrollable conversion log
+- Open output folder button
 
 ## Why These Settings Work on Smart TVs
 
@@ -96,12 +118,12 @@ The `yuv420p` pixel format is the most important setting. Many converters produc
 wmv-to-smarttv/
 ├── wmv_to_smarttv.py       # Main application
 ├── bin/                    # FFmpeg (from Releases)
-│   ├── ffmpeg.exe          # Video encoder
-│   ├── ffplay.exe          # Media player
-│   └── ffprobe.exe         # Media analyzer
+│   ├── ffmpeg.exe
+│   ├── ffplay.exe
+│   └── ffprobe.exe
 ├── README.md
 ├── LICENSE
-└── requirements.txt        # Python dependencies
+└── requirements.txt
 ```
 
 ## Installing Dependencies (Development)
