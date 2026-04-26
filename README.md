@@ -1,6 +1,6 @@
 # WMV to Smart TV Converter
 
-A modern, user-friendly desktop application for converting WMV video files to MP4 format, optimized for maximum compatibility with Smart TVs (Samsung, LG, Sony, Panasonic, and others).
+A modern desktop application for converting WMV video files to MP4, optimized for maximum compatibility with Smart TVs (Samsung, LG, Sony, Panasonic, and others).
 
 ## Features
 
@@ -9,27 +9,38 @@ A modern, user-friendly desktop application for converting WMV video files to MP
 - **Smart TV Optimized** - Output settings specifically tuned for TV playback compatibility
 - **Batch Processing** - Convert multiple WMV files automatically
 - **Progress Tracking** - Real-time progress bar and detailed conversion log
-- **Portable** - No installation required, FFmpeg bundled in the package
+- **Portable** - No installation required (FFmpeg as separate download)
 
 ## Quick Start
 
-### Prerequisites
+### 1. Download
 
-- Windows 10/11
-- Python 3.9+ (if running from source)
+Download the latest release from: **https://github.com/drycool/Convert-WMV-to-Smart-TV-MP4/releases**
 
-### Option 1: Standalone Executable
+Contains two parts:
+- `wmv-to-smarttv.exe` or `wmv_to_smarttv.py` - the converter
+- `ffmpeg-binaries.zip` - FFmpeg executables
 
-1. Download the latest release
-2. Run `wmv_to_smarttv.exe`
-3. Select a folder with WMV files
-4. Click "Convert All"
+### 2. Setup
 
-### Option 2: Running from Source
+**Option A: Using Release package (recommended)**
+1. Extract both archives to the same folder
+2. Keep `bin/` folder next to the executable
+3. Run `wmv_to_smarttv.py` or double-click `wmv-to-smarttv.exe`
+
+**Option B: Using system FFmpeg**
+1. Install FFmpeg: `winget install ffmpeg`
+2. Run the converter - it will use system FFmpeg automatically
+
+### 3. Run
 
 ```bash
-pip install customtkinter
 python wmv_to_smarttv.py
+```
+
+Or if you have the executable:
+```bash
+./wmv-to-smarttv.exe
 ```
 
 ## Usage
@@ -56,6 +67,8 @@ python wmv_to_smarttv.py
 | GPU | h264_nvenc | Fast (5-10x) | Good |
 | CPU | libx264 | Slow | Excellent |
 
+**Note:** GPU mode uses NVIDIA NVENC. Requires RTX/GTX GPU with drivers installed.
+
 ## Supported Smart TVs
 
 - Samsung (Tizen, webOS)
@@ -67,24 +80,39 @@ python wmv_to_smarttv.py
 - Hisense
 - And most other H.264-compatible Smart TVs
 
+## FFmpeg
+
+This project uses FFmpeg under the [LGPL license](https://www.ffmpeg.org/legal.html).
+
+FFmpeg binaries are not included in the repository. Download from Releases or install separately.
+
 ## Project Structure
 
 ```
 wmv-to-smarttv/
-├── bin/                    # FFmpeg executables
+├── wmv_to_smarttv.py       # Main application (Python)
+├── wmv-to-smarttv.exe      # Compiled executable (if available)
+├── bin/                    # FFmpeg (from Releases or your own)
 │   ├── ffmpeg.exe
 │   ├── ffplay.exe
 │   └── ffprobe.exe
-├── wmv_to_smarttv.py       # Main application (GUI)
 ├── README.md
 ├── LICENSE
-└── requirements.txt        # Python dependencies
+└── requirements.txt
+```
+
+## Installing Dependencies (for Python source)
+
+```bash
+pip install customtkinter
 ```
 
 ## Troubleshooting
 
 ### "FFmpeg not found" error
-The FFmpeg binary should be in the `bin/` folder. If running from source, ensure FFmpeg is in your PATH or in the project directory.
+1. Download `ffmpeg-binaries.zip` from Releases
+2. Extract to `bin/` folder next to the script
+3. Or install FFmpeg system-wide: `winget install ffmpeg`
 
 ### Conversion fails on Smart TV
 Ensure you're using the default settings. The `yuv420p` pixel format is critical for TV compatibility.
@@ -97,15 +125,12 @@ Ensure you're using the default settings. The `yuv420p` pixel format is critical
 ## Building Executable
 
 ```bash
-pip install pyinstaller
-pyinstaller --onefile --windowed wmv_to_smarttv.py
+pip install pyinstaller customtkinter
+pyinstaller --onefile --windowed --add-binary "bin;bin" wmv_to_smarttv.py
 ```
 
 ## License
 
-This project uses FFmpeg under the [LGPL license](https://www.ffmpeg.org/legal.html).
+MIT License - see LICENSE file
 
-## Credits
-
-- FFmpeg: https://ffmpeg.org/
-- CustomTkinter: https://github.com/TomSchimansky/CustomTkinter
+FFmpeg is licensed under [LGPL 2.1](https://www.ffmpeg.org/legal.html)

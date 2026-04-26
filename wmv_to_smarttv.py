@@ -15,9 +15,22 @@ import queue
 import sys
 import os
 
-# FFmpeg path - use local bin folder for portable deployment
+# FFmpeg path resolution
+# Priority: 1) local bin/ folder (portable), 2) system PATH
 SCRIPT_DIR = Path(__file__).parent.resolve()
-FFMPEG_PATH = str(SCRIPT_DIR / "bin" / "ffmpeg.exe")
+
+
+def _find_ffmpeg() -> str:
+    """Find FFmpeg executable - prefers local bin/ then system PATH."""
+    # Check local bin folder first (portable deployment)
+    local_ffmpeg = SCRIPT_DIR / "bin" / "ffmpeg.exe"
+    if local_ffmpeg.exists():
+        return str(local_ffmpeg)
+    # Fall back to system PATH
+    return "ffmpeg"
+
+
+FFMPEG_PATH = _find_ffmpeg()
 
 
 class WMVConverterGUI(ctk.CTk):
@@ -281,13 +294,17 @@ class WMVConverterGUI(ctk.CTk):
                 self._update_encoder_label()
         except FileNotFoundError:
             self._log("[ERROR] FFmpeg not found!")
-            self._log("Please install FFmpeg and add to PATH")
+            self._log("Please either:")
+            self._log("  1. Download 'ffmpeg-binaries.zip' from Releases")
+            self._log("  2. Extract it to 'bin/' folder next to this script")
+            self._log("  3. Or install via: winget install ffmpeg")
             messagebox.showerror(
                 "FFmpeg Not Found",
-                "FFmpeg is not installed or not in PATH.\n\n"
-                "Install options:\n"
-                "1. winget install ffmpeg\n"
-                "2. Download from https://ffmpeg.org"
+                "FFmpeg is not installed.\n\n"
+                "Options:\n"
+                "1. Download 'ffmpeg-binaries.zip' from Releases\n"
+                "2. Extract to 'bin/' folder next to this script\n"
+                "3. Or install: winget install ffmpeg"
             )
             self.convert_btn.configure(state="disabled")
         except subprocess.TimeoutExpired:

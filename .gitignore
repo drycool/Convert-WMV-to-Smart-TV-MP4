@@ -116,5 +116,7 @@ Thumbs.db
 *.avi
 *.mkv
 *.wmv
-!presets/*
-!bin/*
+
+# FFmpeg binaries
+bin/
+*.exe
