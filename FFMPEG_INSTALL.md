@@ -1,68 +1,104 @@
 # FFmpeg Installation Guide
 
-## Windows (Recommended Methods)
+## Method 0: Portable (Recommended)
 
-### Method 1: winget (Fastest)
+**This is the easiest way to use the converter.**
+
+1. Download `ffmpeg-binaries.zip` from the [Releases page](https://github.com/drycool/Convert-WMV-to-Smart-TV-MP4/releases)
+2. Extract the archive
+3. You will get a `bin/` folder containing:
+   - `ffmpeg.exe` - video encoder
+   - `ffplay.exe` - media player
+   - `ffprobe.exe` - media analyzer
+4. Place the `bin/` folder in the same directory as `wmv_to_smarttv.py`
+5. Run the converter - it will automatically find FFmpeg
+
+```
+Your folder should look like:
+wmv-to-smarttv/
+├── wmv_to_smarttv.py
+├── bin/
+│   ├── ffmpeg.exe
+│   ├── ffplay.exe
+│   └── ffprobe.exe
+└── (your .wmv files here)
+```
+
+---
+
+## Method 1: winget (System Installation)
+
+If you prefer a system-wide installation:
+
 ```powershell
 winget install ffmpeg
 ```
+
 After installation, **restart your terminal** or IDE for PATH changes to take effect.
 
-### Method 2: Manual Installation
+---
+
+## Method 2: Manual Installation
+
 1. Download from: https://www.gyan.dev/ffmpeg/builds/
    - Choose `ffmpeg-release-essentials.zip`
 2. Extract to `C:\ffmpeg`
 3. Add to PATH: `C:\ffmpeg\bin`
 4. Verify: open new terminal and run `ffmpeg -version`
 
-### Method 3: Chocolatey
+---
+
+## Method 3: Chocolatey
+
 ```powershell
 choco install ffmpeg
 ```
 
+---
+
 ## Verify Installation
+
 ```powershell
 ffmpeg -version
 ```
 
 You should see output like:
 ```
-ffmpeg version 6.x.x ... configuration: ...
+ffmpeg version 8.x.x ... configuration: ...
 ```
 
-## Running the Converter
-1. Place your `.wmv` files in the same folder as `wmv_to_smarttv.py`
-2. Open terminal in that folder
-3. Run:
-```powershell
-python wmv_to_smarttv.py
-```
+---
+
+## FFmpeg Detection Logic
+
+The converter looks for FFmpeg in this order:
+
+1. **Local `bin/` folder** (portable mode) - `bin/ffmpeg.exe` next to the script
+2. **System PATH** - if FFmpeg is installed system-wide
+
+---
 
 ## Troubleshooting
 
-### "ffmpeg not found" after installation
-- **Restart your terminal/IDE** (important!)
+### "FFmpeg not found"
+- Make sure `bin/` folder is **next to** `wmv_to_smarttv.py`, not inside it
+- **Restart your terminal/IDE** after installing FFmpeg
 - Or manually add FFmpeg to PATH:
   ```powershell
   $env:Path += ";C:\ffmpeg\bin"
   ```
 
-### Slow conversion
-The script uses `medium` preset by default. For faster (but larger) output:
-- Change `-preset medium` to `-preset fast` in the script (line 18)
+### GPU encoding issues
+- Verify NVIDIA drivers are installed
+- Try CPU mode as fallback (uncheck "GPU Acceleration")
 
-### NVIDIA GPU Acceleration (Optional)
-If you have NVIDIA RTX 3060 or newer, replace `libx264` with `h264_nvenec` in the script for 5-10x faster encoding:
-```python
-ENCODING_ARGS = [
-    "-c:v", "h264_nvenc",    # NVIDIA GPU instead of CPU
-    # ... rest of settings
-]
-```
-Note: Slightly lower quality at same bitrate compared to libx264.
+---
 
 ## Smart TV Compatibility Notes
-- **yuv420p**: Required for Samsung, LG, Sony, Panasonic TVs
-- **H.264**: Supported by virtually all Smart TVs
-- **AAC 192kbps**: Safe choice - no licensing issues, works everywhere
-- **MP4 container**: Universal support across all brands
+
+| Setting | Value | Why It Matters |
+|---------|-------|----------------|
+| yuv420p | Pixel format | Critical! TVs cannot play 4:4:4 or 10-bit color |
+| H.264 | Video codec | Required by virtually all Smart TV chipsets |
+| AAC 192kbps | Audio | Universal support, no licensing issues |
+| MP4 | Container | Most compatible container format |

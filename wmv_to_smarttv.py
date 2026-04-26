@@ -242,8 +242,9 @@ class WMVConverterGUI(ctk.CTk):
     def _scan_folder(self):
         """Scan selected folder for WMV files."""
         folder = Path(self.selected_folder.get())
-        self.wmv_files = list(folder.glob("*.wmv")) + list(folder.glob("*.WMV"))
-        self.wmv_files.sort()
+        # Use set to avoid duplicates on case-insensitive filesystems (Windows)
+        wmv_set = set(folder.glob("*.wmv")) | set(folder.glob("*.WMV"))
+        self.wmv_files = sorted(wmv_set)
 
         count = len(self.wmv_files)
         self.file_count_label.configure(text=f"{count} WMV file(s) found")
