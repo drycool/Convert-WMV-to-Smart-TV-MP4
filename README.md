@@ -1,163 +1,123 @@
 # WMV to Smart TV Converter
 
-A modern desktop application for converting WMV video files to MP4, optimized for maximum compatibility with Smart TVs (Samsung, LG, Sony, Panasonic, and others).
+A desktop application for converting WMV video files to MP4 with settings tuned for Smart TV playback.
 
 ## Features
 
-- **Multilingual Interface** - English and Russian (Русский) languages supported
-- **Modern GUI** - Clean, dark-themed interface built with CustomTkinter
-- **GPU Acceleration** - NVIDIA NVENC support for 5-10x faster encoding on RTX GPUs
-- **Smart TV Optimized** - Output settings specifically tuned for TV playback
-- **Batch Processing** - Convert multiple WMV files automatically
-- **Progress Tracking** - Real-time progress bar and detailed log
-- **Portable Mode** - No installation required, FFmpeg bundled separately
+- Multilingual interface: English and Russian
+- CustomTkinter desktop GUI
+- NVIDIA NVENC acceleration
+- Smart TV compatible MP4 output
+- Batch conversion with progress log
+- Portable mode with bundled FFmpeg
 
-## System Requirements
+## Repository and Releases
 
-| Requirement | Details |
-|-------------|---------|
-| OS | Windows 10/11 |
-| Python | 3.10+ (for running from source) |
-| GPU | NVIDIA GPU with NVENC (optional, for hardware acceleration) |
-| RAM | 4GB+ recommended |
-| Disk | 200MB for FFmpeg + space for video files |
+Repository:
+
+`https://github.com/drycool/Convert-WMV-to-Smart-TV-MP4`
+
+Releases:
+
+`https://github.com/drycool/Convert-WMV-to-Smart-TV-MP4/releases`
+
+Expected release assets:
+
+- `WMV_to_SmartTV-portable.zip`
+- `ffmpeg-binaries.zip`
+- `wmv_to_smarttv.py`
 
 ## Quick Start
 
-### 1. Download
+### Portable package
 
-Go to **https://github.com/drycool/Convert-WMV-to-Smart-TV-MP4/releases**
+1. Download the portable archive from Releases.
+2. Extract the archive.
+3. Run `WMV_to_SmartTV.exe`.
 
-Download:
-- `wmv_to_smarttv.py` - the converter script
-- `ffmpeg-binaries.zip` - FFmpeg executables
+The executable searches for FFmpeg in this order:
 
-**Or download the portable version:**
-- `WMV_to_SmartTV-portable.zip` - Complete ready-to-run package (no installation needed)
+1. `_internal/bin/ffmpeg.exe`
+2. `bin/ffmpeg.exe`
+3. System `PATH`
 
-### 2. Setup (Portable Mode)
+### Script mode
 
-```
-1. Extract WMV_to_SmartTV-portable.zip
-2. Run: WMV_to_SmartTV.exe
+1. Download `wmv_to_smarttv.py`
+2. Download `ffmpeg-binaries.zip`
+3. Extract the archive so `bin/` is next to `wmv_to_smarttv.py`
+4. Run:
 
-No additional installation required!
-```
-
-### 3. Alternative: Script + FFmpeg
-
-```
-1. Extract ffmpeg-binaries.zip
-2. You will get a "bin/" folder containing:
-   ├── ffmpeg.exe
-   ├── ffplay.exe
-   └── ffprobe.exe
-3. Place the "bin/" folder next to wmv_to_smarttv.py
-4. Run: python wmv_to_smarttv.py
+```bash
+python wmv_to_smarttv.py
 ```
 
-### 4. System FFmpeg (Optional)
+### Optional system FFmpeg
 
-If you prefer not to use the portable version:
 ```powershell
 winget install ffmpeg
 ```
-The script will automatically detect FFmpeg in your system PATH.
 
 ## Usage
 
-1. **Select Language** - Use the dropdown in the top-right corner (EN/RU)
-2. **Select Folder** - Click "Browse" to choose a folder with WMV files
-3. **GPU Option** - Check "GPU Acceleration" for NVIDIA GPUs (recommended)
-4. **Convert** - Click "Convert All" to start batch conversion
-5. **Open Folder** - Click to view your new MP4 files
+1. Select the UI language in the top-right corner.
+2. Choose a folder with `.wmv` files.
+3. Enable GPU mode if NVENC is available.
+4. Click `Convert All`.
+5. Open the folder with converted MP4 files.
 
-## Interface Preview
+## Compatibility Defaults
 
-The interface includes:
-- Language selector (top-right): English / Русский
-- Folder browser with file count
-- GPU/CPU encoding toggle
-- Real-time progress bar
-- Scrollable conversion log
-- Open output folder button
+- Video codec: `H.264`
+- Pixel format: `yuv420p`
+- Audio codec: `AAC 192k`
+- Container: `MP4`
 
-## Why These Settings Work on Smart TVs
+`yuv420p` is required for reliable playback on many TVs.
 
-| Parameter | Value | Why It Matters |
-|-----------|-------|----------------|
-| Video Codec | H.264 (AVC) | Required by virtually all Smart TV chipsets |
-| Pixel Format | yuv420p | Critical! TVs cannot play 4:4:4 or 10-bit color |
-| Audio Codec | AAC 192kbps | Universal support, no licensing issues |
-| Container | MP4 | Most compatible container format |
-| Quality | CRF 22 | High quality, smaller file size |
+## Development
 
-The `yuv420p` pixel format is the most important setting. Many converters produce files that play on PC but fail on TVs due to incompatible color formats.
-
-## GPU vs CPU Encoding
-
-| Mode | Encoder | Speed | Quality | Use Case |
-|------|---------|-------|---------|----------|
-| GPU | h264_nvenc | 5-10x faster | Good | RTX/GTX GPUs, large files |
-| CPU | libx264 | Slow | Excellent | No NVIDIA GPU |
-
-## Supported Smart TVs
-
-- Samsung (Tizen, webOS)
-- LG (webOS)
-- Sony (Android TV)
-- Panasonic (Firefox OS)
-- Philips
-- TCL / Roku TV
-- Hisense
-- And most other H.264-compatible Smart TVs
-
-## Project Structure
-
-```
-wmv-to-smarttv/
-├── wmv_to_smarttv.py       # Main application
-├── bin/                    # FFmpeg (from Releases)
-│   ├── ffmpeg.exe
-│   ├── ffplay.exe
-│   └── ffprobe.exe
-├── README.md
-├── LICENSE
-└── requirements.txt
-```
-
-## Installing Dependencies (Development)
+Install dependencies:
 
 ```bash
-pip install customtkinter
+pip install -r requirements.txt
+```
+
+Run from source:
+
+```bash
 python wmv_to_smarttv.py
+```
+
+## Portable Build
+
+Build the application as an onedir package:
+
+```bash
+pip install pyinstaller
+pyinstaller --noconfirm --windowed --onedir --name WMV_to_SmartTV --add-data "bin;_internal/bin" wmv_to_smarttv.py
+```
+
+Portable resource check:
+
+```bash
+python test_portable_resources.py dist/WMV_to_SmartTV/WMV_to_SmartTV.exe
 ```
 
 ## Troubleshooting
 
-### "FFmpeg not found"
+### FFmpeg not found
+
 1. Download `ffmpeg-binaries.zip` from Releases
-2. Extract so `bin/` folder is next to `wmv_to_smarttv.py`
-3. Or install system FFmpeg: `winget install ffmpeg`
+2. Extract to `bin/` next to the script, or `_internal/bin/` inside the portable build
+3. Or install FFmpeg with `winget install ffmpeg`
 
-### Video plays on PC but not on Smart TV
-- The `yuv420p` setting is critical for TV compatibility
-- Don't change the default pixel format unless advised
+### GPU mode is unavailable
 
-### GPU encoding is slow or fails
-- Verify NVIDIA drivers are installed
-- Ensure your GPU supports NVENC (GTX/RTX series)
-- Try CPU mode as fallback
-
-## Building Executable
-
-```bash
-pip install pyinstaller customtkinter
-pyinstaller --onefile --windowed --add-binary "bin;bin" wmv_to_smarttv.py
-```
+- Update NVIDIA drivers
+- Confirm your GPU supports NVENC
+- Switch to CPU mode if needed
 
 ## License
 
-MIT License - see LICENSE file
-
-FFmpeg is licensed under [LGPL 2.1](https://www.ffmpeg.org/legal.html)
+MIT License. FFmpeg is licensed under LGPL 2.1.
